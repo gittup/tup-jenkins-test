@@ -1,0 +1,14 @@
+.gitignore
+TUP_ROOT=$(TUP_CWD)
+ROOT_DIR=$(TUP_ROOT)/../..
+SRC_DIR=$(ROOT_DIR)/code
+
+TEST_CXXTEST_DIR=$(ROOT_DIR)/utils/cxxtest
+TESTGEN=$(TEST_CXXTEST_DIR)/cxxtestgen.pl
+TGN=cmd_testgen.sh
+
+!tgn = foreach |> /bin/bash $(TGN) $(TESTGEN) --have-std --have-eh -o %o --part %f |>
+
+PACKAGE=pkg
+
+: $(SRC_DIR)/$(PACKAGE)/unittests/*.hpp |> !tgn |> %B.cxxtest.cpp
